@@ -10,17 +10,20 @@ def execute_sessions_pipeline():
     athena_sessions_pipeline = dlt.pipeline(
         pipeline_name="sessions_pipeline",
         destination="athena",
-        dataset_name="ice_sessions",
+        dataset_name="raw_data",
         staging="filesystem"
     )
+
+    def gen_session_chunks(df):
+        yield df.to_dict(orient='records')
 
     # Resource to read data from CSV files and yield lists of dictionaries
     @dlt.resource(table_format="iceberg", write_disposition="append", parallelized=True)
     def session_reader(file_data):
         # Read the CSV file in chunks and yield each chunk as a list of dictionaries
-        df = pd.read_csv(file_data['file_url'], dtype={"user_id": str, "session_id": str})
-        df['session_start_time'] = pd.to_datetime(df['session_start_time'])
-        yield df.to_dict(orient="records")  # Yield the entire chunk as a list of dictionaries
+        for df in pd.read_csv(file_data['file_url'], dtype={"user_id": str, "session_id": str}, chunksize=20000):
+            df['session_start_time'] = pd.to_datetime(df['session_start_time'])
+            yield from gen_session_chunks(df)
 
     athena_adapter(
         session_reader,
