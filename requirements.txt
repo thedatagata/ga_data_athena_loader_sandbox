@@ -1,0 +1,5 @@
+dlt[athena]>=1.2.0
+pandas 
+duckdb 
+enlighten
+uuid
