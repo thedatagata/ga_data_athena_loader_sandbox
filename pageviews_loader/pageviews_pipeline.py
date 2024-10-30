@@ -16,6 +16,9 @@ def execute_pageviews_pipeline():
     )
 
     def gen_session_chunks(df):
+        df.drop_duplicates(subset=['pageview_id'], inplace=True)
+        df['session_start_time'] = df['session_start_time'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
+        df['pageview_timestamp'] = df['pageview_timestamp'].apply(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
         yield df.to_dict(orient='records')
 
     # Resource to read data from CSV files and yield lists of dictionaries
@@ -23,9 +26,6 @@ def execute_pageviews_pipeline():
     def pageview_reader(file_data):
         # Read the CSV file in chunks and yield each chunk as a list of dictionaries
         for df in pd.read_csv(file_data['file_url'], dtype={"user_id": str, "session_id": str, "pageview_id": str}, chunksize=20000):
-            df.drop_duplicates(subset=['pageview_id'], inplace=True)
-            df['session_start_time'] = df['session_start_time'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
-            df['pageview_timestamp'] = pd.to_datetime(df['pageview_timestamp'])
             yield from gen_session_chunks(df)
 
     athena_adapter(
