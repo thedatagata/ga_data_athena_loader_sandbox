@@ -1,12 +1,13 @@
-[sources.filesystem] 
-file_directory='./pageviews/'
-file_max_items=100000 
+[sources.filesystem]
+file_directory='./monthly_pageviews/'  
+max_parallel_items=15  
 
 [normalize]
-workers=5
+workers=7 
 
 [data_writer]
-file_max_items=100000
+buffer_max_items=12000 
+file_max_items=3000 
 
 [load]
-workers=10
+workers=10 
