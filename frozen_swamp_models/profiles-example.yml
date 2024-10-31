@@ -1,0 +1,15 @@
+frozen_swamp:
+  outputs:
+    prod:
+      aws_profile_name: aws_user_name
+      database: awsdatacatalog
+      workgroup: athena_workgroup
+      num_retries: 5
+      region_name: us-east-1
+      s3_data_dir: s3://{bucket_name}/{dlt_database_name}/
+      s3_staging_dir: s3://{bucket_name}/{dlt_generated_staging_folder}/
+      s3_data_naming: table_unique
+      schema: raw_data
+      threads: 4
+      type: athena
+  target: prod
