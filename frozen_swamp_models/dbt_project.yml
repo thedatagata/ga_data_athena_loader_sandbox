@@ -1,0 +1,23 @@
+
+name: 'frozen_swamp'
+version: '1.0.0'
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'frozen_swamp'
+
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:   
+  - "target"
+  - "dbt_packages"
+
+models:
+  frozen_swamp:
+    staging:
+      +materialized: table 

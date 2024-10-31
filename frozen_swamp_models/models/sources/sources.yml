@@ -1,0 +1,87 @@
+version: 2
+
+sources:
+  - name: raw_data_staging 
+    tables:
+      - name: sessions
+        description: "Session-level data with user activity and conversions"
+        columns:
+          - name: user_id
+            description: "Unique identifier for each user"
+            data_type: string
+
+          - name: session_id
+            description: "Unique identifier for each session"
+            data_type: string
+
+          - name: session_device_category
+            description: "Device used in the session"
+            data_type: string
+
+          - name: session_sequence_number
+            description: "Order of sessions for each user"
+            data_type: bigint
+
+          - name: session_start_time
+            description: "Timestamp when the session started"
+            data_type: timestamp
+
+          - name: session_browser
+            description: "Browser used in the session"
+            data_type: string
+
+          - name: session_os
+            description: "Operating system used in the session"
+            data_type: string
+
+          - name: session_is_mobile
+            description: "Flag indicating if the session was on a mobile device"
+            data_type: boolean
+
+          - name: session_device_category
+            description: "Device category for the session"
+            data_type: string
+
+          - name: session_country
+            description: "Country where the session occurred"
+            data_type: string
+
+          - name: session_region
+            description: "Region of the session location"
+            data_type: string
+
+          - name: session_city
+            description: "City of the session location"
+            data_type: string
+
+          - name: session_marketing_channel
+            description: "Marketing channel that initiated the session"
+            data_type: string
+
+          - name: session_landing_screen
+            description: "Landing screen/page of the session"
+            data_type: string
+
+          - name: session_revenue
+            description: "Revenue generated in the session"
+            data_type: double
+
+          - name: session_order_cnt
+            description: "Number of orders in the session"
+            data_type: bigint
+
+          - name: session_duration
+            description: "Duration of the session in seconds"
+            data_type: bigint
+
+          - name: session_is_first_visit
+            description: "Flag indicating if it is the user's first session"
+            data_type: boolean
+
+          - name: _dlt_load_id
+            description: "Unique load identifier for the session (DLT metadata)"
+            data_type: string
+
+          - name: _dlt_id
+            description: "Unique identifier within DLT for session records"
+            data_type: string
