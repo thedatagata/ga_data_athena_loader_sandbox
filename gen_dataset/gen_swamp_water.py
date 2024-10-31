@@ -1,15 +1,19 @@
-import pandas as pd
 import duckdb
-from datetime import datetime, timedelta 
 
-db = duckdb.connect(database=':memory:', read_only=False)
-data_swamp = duckdb.query("SELECT * FROM read_csv_auto('{path_to_train_v2.csv}', max_line_size=5000000)")
+# Define your file path and read the data
+path_to_csv = '{path_to_train_v2.csv}'
+data_swamp = duckdb.query(f"""
+    SELECT *,
+           DATE_TRUNC('month', TO_DATE(date, '%Y%m%d')) AS month_start
+    FROM read_csv_auto('{path_to_csv}', max_line_size=5000000)
+""").to_df()
 
-# 638 is the number of days between the earliest date and the latest date in the dataset + 1 because range stops 1 before the second number
-for i in range(0, 638):
-    # 2730 is the number of days between the earliest date in the dataset and today
-    x = 2730 - i 
-    df = duckdb.query(f"SELECT * FROM data_swamp ds WHERE DATEDIFF('d', strptime(ds.date, '%Y%m%d'), CURRENT_DATE) = {x}").df() 
-    fn_dt = pd.to_datetime(df['date'], format='%Y%m%d')[0].strftime('%d-%m-%Y')
-    print(fn_dt)
-    df.to_csv(f"../data_swamp/swamp_water-{fn_dt}.csv", index=False)
+# Get unique months and iterate over each to save separate CSV files
+for month in data_swamp['month_start'].unique():
+    # Filter data for the specific month
+    monthly_data = data_swamp[data_swamp['month_start'] == month]
+    # Save to CSV with the start date of the month in the file name
+    month_str = month.strftime('%Y-%m-%d')
+    monthly_data.to_csv(f'monthly_data_{month_str}.csv', index=False)
+
+
