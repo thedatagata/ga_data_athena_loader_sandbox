@@ -23,3 +23,8 @@
 ## Frozen Swamp Models
 
 - DBT Project using the athena aws glue iceberg adapter to transform the data to create a user dimensions table. 
+
+
+## Snowflake Icelake Setup
+
+- Queries to set up a connection between your iceberg datalake and Snowflake so you can run queries against your iceberg tables with Snowflake
