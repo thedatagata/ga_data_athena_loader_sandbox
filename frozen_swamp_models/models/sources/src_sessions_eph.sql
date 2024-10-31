@@ -20,4 +20,4 @@ SELECT
     session_duration,
     session_is_first_visit,
     CASE WHEN session_revenue > 0 THEN 1 ELSE 0 END AS is_conversion
-FROM {{ source('raw_data_staging', 'sessions') }}
+FROM {{ source('raw_data', 'sessions') }}

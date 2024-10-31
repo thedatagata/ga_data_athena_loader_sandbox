@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: raw_data_staging 
+  - name: raw_data
     tables:
       - name: sessions
         description: "Session-level data with user activity and conversions"
